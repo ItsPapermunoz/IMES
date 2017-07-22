@@ -240,7 +240,7 @@ def decrypt():
         is_int = check_int(char)
         if is_int is True:
             debug = char
-            int(debug)
+            debug = int(debug)
         else:
             decrypt_code.append(char)
             continue
@@ -252,13 +252,13 @@ def decrypt():
                 code = code * original_code
                 code_changed = original_code
                 replaced = original_code
-                e_char = int(debug) - int(code)
+                e_char = debug - code
                 replaced -= 1
             else:
                 code = code / 2
                 code_changed -= 1
                 replaced = original_code
-                e_char = int(debug) - int(code)
+                e_char = debug - code
                 replaced -= 1
         if e_char < 0:
             e_char += 26
