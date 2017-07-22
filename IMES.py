@@ -245,7 +245,7 @@ def decrypt():
             decrypt_code.append(char)
             continue
         if replaced != 0:
-            e_char = int(debug) - int(code)
+            e_char = debug - code
             replaced -= 1
         else:
             if code_changed == 0:
