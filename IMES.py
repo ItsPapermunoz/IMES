@@ -31,6 +31,7 @@ def fetch():
         os.system("pause")
 
 
+
 def contact_us():
     print("Thank you for sending me your feedback at {}.".format(__authoremail__))
 
@@ -176,9 +177,10 @@ def encrypt():
         with its corresponding number from the alphabet +
         the number of letters in the code"""
         replaced += 1
-        if replaced == code:
-            code += code
+        if replaced == original_code:
+            code = code + original_code
             code_changed += 1
+            replaced = 0
             """After the amount of replaced letters is the same
             of the number of letters in the code the number of letters
             in the code doubles"""
@@ -195,7 +197,6 @@ def encrypt():
 
 
 def find_char(x):
-    i = 0
     e_char = ""
     txt = []
     for char in x:
@@ -204,6 +205,7 @@ def find_char(x):
             e_char = ""
             continue
         e_char += char
+    txt.reverse()
     return txt
 
 def check_encrypted(x):
@@ -217,53 +219,31 @@ def check_encrypted(x):
     else:
         print("File is Not encrypted!")
         os.system("pause")
+        return False, False
 def decrypt():
     filename = fetch()
     code = get_code()
     original_code = len(code)
     code = original_code
-    code_changed = 0
-    replaced = 0
     trash = ""
     is_int = False
     decrypt_code = []
     if filename == None:
         return
     data, txt = check_encrypted(filename)
+    if data is False:
+        return
     replaced, code_changed, trash = data
     replaced = int(replaced)
     code_changed = int(code_changed)
-    e_char_ls = find_char(txt)
-    e_char_ls.reverse()
-    e_char = None
-    for char in e_char_ls:
-        is_int = check_int(char)
-        if is_int is True:
-            debug = char
-            debug = int(debug)
+    txt = find_char(txt)
+    for instance in txt:
+        is_int = check_int(instance)
+        if is_int is False:
+            decrypt_code.append(instance)
         else:
-            decrypt_code.append(char)
-            continue
-        if replaced != 0:
-            e_char = debug - code
-            replaced -= 1
-        else:
-            if code_changed == 0:
-                code = code * original_code
-                code_changed = original_code
-                replaced = original_code
-                e_char = debug - code
-                replaced -= 1
-            else:
-                code = code / 2
-                code_changed -= 1
-                replaced = original_code
-                e_char = debug - code
-                replaced -= 1
-        if e_char < 0:
-            e_char += 26
-        decrypt_code.append(e_char)
-    print(decrypt_code)
+            char = int(instance)
+
 
 # Main Code
 decrypt()
