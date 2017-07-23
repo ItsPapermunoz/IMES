@@ -14,7 +14,6 @@ __version__ = "Alpha"
 def welcome():
     print("Welcome to IMES: Itspaper's Message Encryption System!")
     print("Made by: {}. You are using Version: {}".format(__author__, __version__))
-    os.system("pause")
 
 
 def fetch():
@@ -24,10 +23,11 @@ def fetch():
     os.system("pause")
     try:
         file = open("{}".format(filename), "r")
-        print("File fetched!")
+        print("{} fetched!".format(filename))
+        os.system("pause")
         return filename
     except FileNotFoundError:
-        print("File does not exist...")
+        print("{} does not exist...".format(filename))
         os.system("pause")
 
 
@@ -55,7 +55,7 @@ def replace(char):
         char = 4
     elif char == "E" or char == "e":
         char = 5
-    elif char == "F" or char == "F":
+    elif char == "F" or char == "f":
         char = 6
     elif char == "G" or char == "g":
         char = 7
@@ -87,7 +87,7 @@ def replace(char):
         char = 20
     elif char == "U" or char == "u":
         char = 21
-    elif char == "V" or char == "V":
+    elif char == "V" or char == "v":
         char = 22
     elif char == "W" or char == "w":
         char = 23
@@ -120,16 +120,15 @@ def replace(char):
     return char
 
 
-def new_file(x, y, z):
+def new_file(x, y):
     try:
         file = open("{}".format(x), "r")
         file.close()
         os.remove("{}".format(x))
-        new_file(x,y,z)
+        new_file(x,y)
     except FileNotFoundError:
         file = open("{}".format(x), "w")
         file.write("THIS FILE HAS BEEN ENCRYPTED USING IMES\n")
-        file.write(z + "\n")
         file.write(y)
         file.close()
 
@@ -191,9 +190,8 @@ def encrypt():
                 code = original_code
                 code_changed = 0
                 replaced = 0
-    data = str(replaced) + str(code_changed)
     imes_file = "IMES {}".format(filename)
-    new_file(imes_file,etext, data)
+    new_file(imes_file,etext)
 
 
 def find_char(x):
@@ -205,45 +203,169 @@ def find_char(x):
             e_char = ""
             continue
         e_char += char
-    txt.reverse()
     return txt
 
 def check_encrypted(x):
     file = open("{}".format(x), "r")
     x = file.readline()
     if x == "THIS FILE HAS BEEN ENCRYPTED USING IMES\n":
-        z = file.readline()
         y = file.read()
         file.close()
-        return z, y
+        return True, y
     else:
         print("File is Not encrypted!")
         os.system("pause")
         return False, False
+
+
+def decryp_char(char):
+    if char == 1:
+        dchar = "A"
+    elif char == 2:
+        dchar = "B"
+    elif char == 3:
+        dchar = "C"
+    elif char == 4:
+        dchar = "D"
+    elif char == 5:
+        dchar = "E"
+    elif char == 6:
+        dchar = "F"
+    elif char == 7:
+        dchar = "G"
+    elif char == 8:
+        dchar = "H"
+    elif char == 9:
+        dchar = "I"
+    elif char == 10:
+        dchar = "J"
+    elif char == 11:
+        dchar = "K"
+    elif char == 12:
+        dchar = "L"
+    elif char == 13:
+        dchar = "M"
+    elif char == 14:
+        dchar = "N"
+    elif char == 15:
+        dchar = "O"
+    elif char == 16:
+        dchar = "P"
+    elif char == 17:
+        dchar = "Q"
+    elif char == 18:
+        dchar = "R"
+    elif char == 19:
+        dchar = "S"
+    elif char == 20:
+        dchar = "T"
+    elif char == 21:
+        dchar = "U"
+    elif char == 22:
+        dchar = "V"
+    elif char == 23:
+        dchar = "W"
+    elif char == 24:
+        dchar = "X"
+    elif char == 25:
+        dchar = "Y"
+    elif char == 26:
+        dchar = "Z"
+    elif char == "A":
+        dchar = "0"
+    elif char == "B":
+        dchar = "1"
+    elif char == "C":
+        dchar = "2"
+    elif char == "D":
+        dchar = "3"
+    elif char == "E":
+        dchar = "4"
+    elif char == "F":
+        dchar = "5"
+    elif char == "G":
+        dchar = "6"
+    elif char == "H":
+        dchar = "7"
+    elif char == "I":
+        dchar = "8"
+    elif char == "J":
+        dchar = "9"
+    elif char == 0:
+        dchar = " "
+    else:
+        dchar = str(char)
+    return dchar
+
 def decrypt():
     filename = fetch()
     code = get_code()
     original_code = len(code)
     code = original_code
-    trash = ""
+    replaced = 0
+    code_changed = 0
     is_int = False
     decrypt_code = []
     if filename == None:
         return
-    data, txt = check_encrypted(filename)
-    if data is False:
+    is_encrypted, txt = check_encrypted(filename)
+    if is_encrypted is False:
         return
-    replaced, code_changed, trash = data
-    replaced = int(replaced)
-    code_changed = int(code_changed)
     txt = find_char(txt)
     for instance in txt:
         is_int = check_int(instance)
         if is_int is False:
             decrypt_code.append(instance)
+            continue
         else:
             char = int(instance)
+        char -= code
+        replaced += 1
+        if replaced == original_code:
+            code += original_code
+            code_changed += 1
+            replaced = 0
+            if code_changed == original_code:
+                code = original_code
+                code_changed = 0
+                replaced = 0
+        if char < 0:
+            char += 26
+        decrypt_code.append(char)
+    dtxt = ""
+    for char in decrypt_code:
+        dchar = decryp_char(char)
+        dtxt += dchar
+    new_filename = input("Please enter the name for the new file...") + ".txt"
+    while new_filename == ".txt":
+        new_filename = input("Please enter a valid file name...") + ".txt"
+    file = open("{}".format(new_filename), "w")
+    file.write(dtxt)
+
+
+def menu():
+    os.system("cls")
+    welcome()
+    print("1.Encrypt File")
+    print("2.Decrypt file")
+    print("3.Send Feedback to author")
+    menusel = input("Please enter the number of the option, or type exit to quit...")
+    is_int = check_int(menusel)
+    if is_int is True:
+        if int(menusel) == 1:
+            encrypt()
+        elif int(menusel) == 2:
+            decrypt()
+        elif int(menusel) == 3:
+            contact_us()
+    elif menusel == "EXIT" or menusel == "exit" or menusel == "Exit":
+        exit()
+    else:
+        print("Option not recognized! Please try again!")
+        os.system("pause")
 
 
 # Main Code
-decrypt()
+
+while True:
+    menu()
