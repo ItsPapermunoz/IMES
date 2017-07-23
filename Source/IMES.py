@@ -44,81 +44,11 @@ def grab_text(x):
 
 def replace(char):
     if char == " ":
-        char = 0
-    elif char == "A" or char == "a":
-        char = 1
-    elif char == "B" or char == "b":
-        char = 2
-    elif char == "C" or char == "c":
-        char = 3
-    elif char == "D" or char == "d":
-        char = 4
-    elif char == "E" or char == "e":
-        char = 5
-    elif char == "F" or char == "f":
-        char = 6
-    elif char == "G" or char == "g":
-        char = 7
-    elif char == "H" or char == "h":
-        char = 8
-    elif char == "I" or char == "i":
-        char = 9
-    elif char == "J" or char == "j":
-        char = 10
-    elif char == "K" or char == "k":
-        char = 11
-    elif char == "L" or char == "l":
-        char = 12
-    elif char == "M" or char == "m":
-        char = 13
-    elif char == "N" or char == "n":
-        char = 14
-    elif char == "O" or char == "o":
-        char = 15
-    elif char == "P" or char == "p":
-        char = 16
-    elif char == "Q" or char == "q":
-        char = 17
-    elif char == "R" or char == "r":
-        char = 18
-    elif char == "S" or char == "s":
-        char = 19
-    elif char == "T" or char == "t":
-        char = 20
-    elif char == "U" or char == "u":
-        char = 21
-    elif char == "V" or char == "v":
-        char = 22
-    elif char == "W" or char == "w":
-        char = 23
-    elif char == "X" or char == "x":
-        char = 24
-    elif char == "Y" or char == "y":
-        char = 25
-    elif char == "Z" or char == "z":
-        char = 26
-    elif char == "0":
-        char = "A"
-    elif char == "1":
-        char = "B"
-    elif char == "2":
-        char = "C"
-    elif char == "3":
-        char = "D"
-    elif char == "4":
-        char = "E"
-    elif char == "5":
-        char = "F"
-    elif char == "6":
-        char = "G"
-    elif char == "7":
-        char = "H"
-    elif char == "8":
-        char = "I"
-    elif char == "9":
-        char = "J"
-    return char
-
+        return 0
+    elif char.isalpha():
+        return ord(char.lower()) - 96
+    elif char.isnumeric() and int(char) < 10:
+        return chr(int(char) + 65)
 
 def new_file(x, y):
     try:
