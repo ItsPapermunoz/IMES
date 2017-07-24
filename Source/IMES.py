@@ -23,13 +23,13 @@ def fetch():
     os.system("pause")
     try:
         file = open("{}".format(filename), "r")
+        file.close()
         print("{} fetched!".format(filename))
         os.system("pause")
         return filename
     except FileNotFoundError:
         print("{} does not exist...".format(filename))
         os.system("pause")
-
 
 
 def contact_us():
@@ -42,6 +42,7 @@ def grab_text(x):
     file.close()
     return txt
 
+
 def replace(char):
     if char == " ":
         return 0
@@ -50,12 +51,13 @@ def replace(char):
     elif char.isnumeric() and int(char) < 10:
         return chr(int(char) + 65)
 
+
 def new_file(x, y):
     try:
         file = open("{}".format(x), "r")
         file.close()
         os.remove("{}".format(x))
-        new_file(x,y)
+        new_file(x, y)
     except FileNotFoundError:
         file = open("{}".format(x), "w")
         file.write("THIS FILE HAS BEEN ENCRYPTED USING IMES\n")
@@ -75,12 +77,13 @@ def get_code():
 def check_int(x):
     # This Function Checks if character is a number or a letter.
     try:
-        test = int(x)
+        int(x)
         y = True
     except ValueError:
         y = False
     finally:
         return y
+
 
 def encrypt():
     filename = fetch()
@@ -89,7 +92,7 @@ def encrypt():
     code = original_code
     code_changed = 0
     replaced = 0
-    if filename == None:
+    if filename is None:
         return
     txt = grab_text(filename)
     etext = ""
@@ -121,7 +124,7 @@ def encrypt():
                 code_changed = 0
                 replaced = 0
     imes_file = "IMES {}".format(filename)
-    new_file(imes_file,etext)
+    new_file(imes_file, etext)
 
 
 def find_char(x):
@@ -134,6 +137,7 @@ def find_char(x):
             continue
         e_char += char
     return txt
+
 
 def check_encrypted(x):
     file = open("{}".format(x), "r")
@@ -148,7 +152,7 @@ def check_encrypted(x):
         return False, False
 
 
-def decryp_char(char):
+def decrypt_char(char):
     if char == 1:
         dchar = "A"
     elif char == 2:
@@ -227,6 +231,7 @@ def decryp_char(char):
         dchar = str(char)
     return dchar
 
+
 def decrypt():
     filename = fetch()
     code = get_code()
@@ -234,9 +239,8 @@ def decrypt():
     code = original_code
     replaced = 0
     code_changed = 0
-    is_int = False
     decrypt_code = []
-    if filename == None:
+    if filename is None:
         return
     is_encrypted, txt = check_encrypted(filename)
     if is_encrypted is False:
@@ -264,7 +268,7 @@ def decrypt():
         decrypt_code.append(char)
     dtxt = ""
     for char in decrypt_code:
-        dchar = decryp_char(char)
+        dchar = decrypt_char(char)
         dtxt += dchar
     new_filename = input("Please enter the name for the new file...") + ".txt"
     while new_filename == ".txt":
