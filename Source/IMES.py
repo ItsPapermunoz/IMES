@@ -6,44 +6,44 @@ import os
 
 __author__ = "Rodrigo 'ItsPaper' Muñoz"
 __authoremail__ = "Rodrigo.mcuadrada@gmail.com"
-__version__ = "Alpha"
+__version__ = "Beta"
 
 # Functions
 
 
 def welcome():
+    # Prints basic program info
     print("Welcome to IMES: Itspaper's Message Encryption System!")
     print("Made by: {}. You are using Version: {}".format(__author__, __version__))
 
 
-def fetch():
-    os.system("cls")
+def grab_filename():
+    # Prompts the user for input on file name!
     filename = input("Please enter file name...") + ".txt"
     print("Fetching file...")
-    os.system("pause")
     try:
         file = open("{}".format(filename), "r")
         file.close()
         print("{} fetched!".format(filename))
-        os.system("pause")
         return filename
     except FileNotFoundError:
         print("{} does not exist...".format(filename))
-        os.system("pause")
-
+        return False
 
 def contact_us():
     print("Thank you for sending me your feedback at {}.".format(__authoremail__))
 
 
-def grab_text(x):
-    file = open("{}".format(x))
+def grab_text(filename):
+    # Opens x file reads its text and returns it
+    file = open(filename, "r")
     txt = file.read()
     file.close()
     return txt
 
 
 def replace(char):
+    # Replaces given argument string with a given number or letter
     if char == " ":
         return 0
     elif char.isalpha():
@@ -86,14 +86,14 @@ def check_int(x):
 
 
 def encrypt():
-    filename = fetch()
+    filename = grab_filename()
+    if filename is False:
+        return
     code = get_code()
     original_code = len(code)
     code = original_code
     code_changed = 0
     replaced = 0
-    if filename is None:
-        return
     txt = grab_text(filename)
     etext = ""
     for char in txt:
@@ -233,7 +233,7 @@ def decrypt_char(char):
 
 
 def decrypt():
-    filename = fetch()
+    filename = grab_filename()
     code = get_code()
     original_code = len(code)
     code = original_code
